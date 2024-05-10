@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "useDefineForClassFields": true,
+    "declaration": true,
+    "module": "commonjs",
+    "moduleResolution": "Node",
+    "strict": true,
+    "outDir": "dist",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "typeRoots": ["./types/modules", "./node_modules/@types"]
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

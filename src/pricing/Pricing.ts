@@ -10,7 +10,11 @@ export class PricingOracle {
 
   constructor(
     oracle_update_interval: number = 5 * 60 * 1000,
-    pricempire_providers: string[] = ['buff_avg7', 'csgoempire_avg7'],
+    pricempire_providers: string[] = [
+      'buff_avg7',
+      'csgoempire_avg7',
+      'csgoempire_lastsale',
+    ],
   ) {
     this.redis_client = new RedisClient();
     this.oracle_update_interval = oracle_update_interval;
@@ -89,7 +93,7 @@ export class PricingOracle {
         }
       });
       const sum = marketPrices.reduce((a: number, b: number) => a + b, 0);
-      const averagePrice = (sum / marketPrices.length) / 0.6142808; // price in coins
+      const averagePrice = sum / marketPrices.length / 0.6142808; // price in coins
 
       const redisPrice: RedisPrices = {
         item_name: itemName,

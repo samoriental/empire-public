@@ -2,7 +2,7 @@ import { EmpireSocket, NEW_ITEM } from '../empire/Socket';
 import { withdraw_filters } from './filters';
 import { RedisClient } from '../redis/RedisClient';
 import { SocketNewItem } from '../empire/EmpireTypes';
-import { env_variables } from '../env';
+import { env_variables } from '../helper/env';
 import { EmpireUser } from '../empire/User';
 
 export class WithdrawManager {

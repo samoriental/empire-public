@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import { SocketAuctionUpdate, SocketInit, SocketNewItem } from './EmpireTypes';
 import { EmpireUser } from './User';
 import { setTimeout, clearTimeout } from 'timers';
-import { env_variables } from '../env';
+import { env_variables } from '../helper/env';
 import { UserEmpireMetadata } from './UserTypes';
 
 type Callback = (data: any) => void;

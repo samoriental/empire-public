@@ -1,6 +1,6 @@
 import { EmpireSocket } from './Socket';
 import axios from 'axios';
-import { env_variables } from '../env';
+import { env_variables } from '../helper/env';
 import { UserEmpireMetadata } from './UserTypes';
 import { TTLMap } from '../helper/TTLMap';
 import { SocketAuctionUpdate, SocketNewItem } from './EmpireTypes';

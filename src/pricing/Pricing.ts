@@ -1,5 +1,5 @@
 import { RedisClient } from '../redis/RedisClient';
-import { env_variables } from '../env';
+import { env_variables } from '../helper/env';
 import axios from 'axios';
 import { RedisPrices } from '../redis/RedisTypes';
 

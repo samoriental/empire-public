@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { filter_env_variables } from '../env';
+import { filter_env_variables } from '../helper/env';
 
 interface WithdrawFilters {
   min_price: number;

@@ -1,5 +1,5 @@
 import Redis from 'ioredis';
-import { env_variables } from '../env';
+import { env_variables } from '../helper/env';
 import { RedisPrices } from './RedisTypes';
 
 export class RedisClient {

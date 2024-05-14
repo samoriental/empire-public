@@ -48,12 +48,15 @@ const checkENVVariables = (): ENVars => {
 const checkFilterENVVariables = (): FilterENVVars => {
   const filter_env_vars = {
     FILTER_MIN_PRICEMPIRE_LIQUIDITY_SCORE:
-      Number(process.env.FILTER_MIN_PRICEMPIRE_LIQUIDITY_SCORE) || 50,
+      !Number.isNaN(Number(process.env.FILTER_MIN_PRICEMPIRE_LIQUIDITY_SCORE)) ? Number(process.env.FILTER_MIN_PRICEMPIRE_LIQUIDITY_SCORE) : 50,
     FILTER_STAT_TRACK: process.env.FILTER_STAT_TRACK === 'true' || false,
     FILTER_COMMODITY: process.env.FILTER_COMMODITY === 'true' || false,
-    FILTER_MAX_PRICE: Number(process.env.FILTER_MAX_PRICE) || 100,
-    FILTER_MIN_PRICE: Number(process.env.FILTER_MIN_PRICE) || 5,
-    PROFIT_MARGIN: Number(process.env.PROFIT_MARGIN) || 0.08,
+    FILTER_MAX_PRICE:
+      !Number.isNaN(Number(process.env.FILTER_MAX_PRICE)) ? Number(process.env.FILTER_MAX_PRICE) : 100,
+    FILTER_MIN_PRICE:
+      !Number.isNaN(Number(process.env.FILTER_MIN_PRICE)) ? Number(process.env.FILTER_MIN_PRICE) : 5,
+    PROFIT_MARGIN:
+      !Number.isNaN(Number(process.env.PROFIT_MARGIN)) ? Number(process.env.PROFIT_MARGIN) : 0.08,
   };
   console.info('Current filter settings:');
   console.info(

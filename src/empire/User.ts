@@ -15,7 +15,7 @@ export class EmpireUser {
 
   constructor(empire_ws: EmpireSocket) {
     this.empire_ws = empire_ws;
-    setInterval(this.processQueue.bind(this), 1100);
+    setInterval(this.processQueue.bind(this), 3500);
   }
 
   async purchaseItem(item_id: number, coin_price: number): Promise<boolean> {
@@ -71,50 +71,44 @@ export class EmpireUser {
   }
 
   async placeBid(item_id: string, coin_price: number) {
-    console.log("placing bid")
-    const maxRetries = 3;
-    for (let i = 0; i < maxRetries; i++) {
-      try {
-        const response = await axios.post(
-          `https://${env_variables.EMPIRE_URL}/api/v2/trading/deposit/${item_id}/bid`,
-          { bid_value: Math.round(coin_price) },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${env_variables.EMPIRE_API_KEY}`,
-            },
-          }
-        );
-        return true;
-      } catch (error: any) {
-        if (axios.isAxiosError(error) && error.response) {
-          switch (error.response.status) {
-            case 400:
-              if (error.response.data.message === 'This item has already been bid on for a higher amount.') {
-                return false;
-              }
-              if (error.response.data.message === "This auction already finished.") {
-                console.info("Missed auction")
-                return false;
-              }
-              else {
-                console.error('An error occurred:', error);
-                break;
-              }
-            case 410:
-              console.log("Item doesn't exist!");
+    console.log("placing bid");
+    try {
+      const response = await axios.post(
+        `https://${env_variables.EMPIRE_URL}/api/v2/trading/deposit/${item_id}/bid`,
+        { bid_value: Math.round(coin_price) },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${env_variables.EMPIRE_API_KEY}`,
+          },
+        }
+      );
+      return true;
+    } catch (error: any) {
+      if (axios.isAxiosError(error) && error.response) {
+        switch (error.response.status) {
+          case 400:
+            if (error.response.data.message === 'This item has already been bid on for a higher amount.') {
               return false;
-            default:
-              console.error('Unhandled error:', error);
-              break;
-          }
-          coin_price += Math.round(coin_price * 1.01)
-          await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            if (error.response.data.message === "This auction already finished.") {
+              console.info("Missed auction");
+              return false;
+            }
+            console.error('An error occurred:', error);
+            break;
+          case 410:
+            console.log("Item doesn't exist!");
+            return false;
+          default:
+            console.error('Unhandled error:', error);
+            break;
         }
       }
     }
     return false;
   }
+
 
 
   async bidToLimit(item: SocketNewItem, coin_price: number) {

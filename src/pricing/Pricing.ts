@@ -89,7 +89,7 @@ export class PricingOracle {
         }
       });
       const sum = marketPrices.reduce((a: number, b: number) => a + b, 0);
-      const averagePrice = sum / marketPrices.length / 0.6142808; // price in coins
+      const averagePrice = (sum / marketPrices.length) / 0.6142808; // price in coins
 
       const redisPrice: RedisPrices = {
         item_name: itemName,

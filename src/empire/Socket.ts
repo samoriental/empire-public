@@ -42,6 +42,9 @@ export class EmpireSocket {
     this.io.on('init', this.init.bind(this));
     this.io.on('new_item', this.newItem.bind(this));
     this.io.on('auction_update', this.auctionUpdate.bind(this));
+    this.io.on('reconnect', async () => {
+      this.metadata = await EmpireUser.fetchEmpireMetaData();
+    });
   }
 
   subscribeToEvent(event: symbol | number, cb: Callback) {

@@ -104,9 +104,9 @@ export class WithdrawManager {
     if (is_valid) {
       if (new_item.auction_ends_at) {
         console.info(
-          `Bidding ${new_item.market_name} for max $${(max_price / 100)}`,
+          `Bidding ${new_item.market_name} for max ${(max_price / 100)}c`,
         );
-        this.empire_user.bidToLimit(new_item, max_price);
+        await this.empire_user.bidToLimit(new_item, max_price);
       } else {
         console.info(
           `Purchasing ${new_item.market_name} for $${(new_item.purchase_price / 100) * 0.614}`,

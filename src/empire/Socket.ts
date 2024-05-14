@@ -1,38 +1,47 @@
-import {meta} from "@typescript-eslint/eslint-plugin";
-
-// process.env.DEBUG="*"
 // @ts-expect-error : NO TYPES
 import io from 'socket.io-client';
-import { env_variables } from '../env';
 import { SocketAuctionUpdate, SocketInit, SocketNewItem } from './EmpireTypes';
-import { fetchEmpireMetaData, IEmpireMetadata } from './EmpireUserData';
-let temp_meta_data: any;
+import { EmpireUser } from './User';
+import { setTimeout, clearTimeout } from 'timers';
+import { env_variables } from '../env';
+import { UserEmpireMetadata } from './UserTypes';
 
 type Callback = (data: any) => void;
+type AuctionSubscriptionInformation = {
+  cb: Callback;
+  timer: NodeJS.Timeout;
+};
+
+export const NEW_ITEM = Symbol('new_item');
 
 export class EmpireSocket {
   io: any;
   eventSubscribers: Map<symbol | number, Callback[]> = new Map();
-  metadata!: IEmpireMetadata;
+  auctionSubscriptions: Map<number, AuctionSubscriptionInformation> = new Map();
+  metadata!: UserEmpireMetadata;
 
   constructor() {
     this.fetchAndConfigure().catch(error => console.error(error));
   }
 
   private async fetchAndConfigure(): Promise<void> {
-    this.metadata = await fetchEmpireMetaData();
-    this.io = io('wss://trade.csgoempire.com/trade', {
-      transports: ["websocket"],
-      path: "/s/",
+    this.metadata = await EmpireUser.fetchEmpireMetaData();
+    this.io = io(`wss://trade.${env_variables.EMPIRE_URL}/trade`, {
+      transports: ['websocket'],
+      path: '/s/',
       secure: true,
       rejectUnauthorized: false,
-      extraHeaders: { 'User-agent': `${this.metadata.user.id} API Bot` }
+      extraHeaders: { 'User-agent': `API Bot` },
     });
-    this.io.on('connect', () => {
-      console.log('Connected to the server.')
-      this.io.on('new_item', (data: unknown) => console.log(`new_item: ${JSON.stringify(data)}`));
+    this.io.on('connect', async () => {
+      this.io.emit('filters', {
+        price_max: 99999999,
+      });
+      console.log('Connected to the server.');
     });
     this.io.on('init', this.init.bind(this));
+    this.io.on('new_item', this.newItem.bind(this));
+    this.io.on('auction_update', this.auctionUpdate.bind(this));
   }
 
   subscribeToEvent(event: symbol | number, cb: Callback) {
@@ -49,6 +58,32 @@ export class EmpireSocket {
       if (index > -1) {
         subscribers.splice(index, 1);
       }
+    }
+  }
+
+  subscribeToAuction(
+    auction_id: number,
+    cb: Callback,
+    end_at: number = 180 * 1000,
+  ) {
+    const currentSubscription = this.auctionSubscriptions.get(auction_id);
+    if (currentSubscription) {
+      clearTimeout(currentSubscription.timer);
+    }
+    const subscriptionInfo: AuctionSubscriptionInformation = {
+      cb,
+      timer: setTimeout(() => {
+        this.unsubscribeFromAuction(auction_id);
+      }, end_at),
+    };
+    this.auctionSubscriptions.set(auction_id, subscriptionInfo);
+  }
+
+  unsubscribeFromAuction(auction_id: number) {
+    const subscriptionInfo = this.auctionSubscriptions.get(auction_id);
+    if (subscriptionInfo) {
+      clearTimeout(subscriptionInfo.timer);
+      this.auctionSubscriptions.delete(auction_id);
     }
   }
 
@@ -73,5 +108,21 @@ export class EmpireSocket {
         signature: this.metadata.socket_signature,
       });
     }
+  }
+
+  async newItem(data: SocketNewItem[]) {
+    data.forEach(item => {
+      this.emitEvent(NEW_ITEM, item);
+    });
+  }
+
+  async auctionUpdate(data: SocketAuctionUpdate[]) {
+    data.forEach(auction => {
+      this.auctionSubscriptions.forEach((subscriptionInfo, auction_id) => {
+        if (auction.id === auction_id) {
+          subscriptionInfo.cb(auction);
+        }
+      });
+    });
   }
 }

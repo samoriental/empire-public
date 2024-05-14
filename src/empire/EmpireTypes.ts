@@ -16,10 +16,11 @@ export interface SocketInit {
 }
 
 export interface SocketNewItem {
-  auction_ends_at: number;
+  auction_ends_at: number | null;
   id: number;
   market_name: string;
   purchase_price: number;
+  is_commodity: boolean;
 }
 
 export interface SocketAuctionUpdate {

@@ -41,6 +41,15 @@ export class RedisClient {
     }
   }
 
+  public async getPrices(item_name: string): Promise<RedisPrices | undefined> {
+    const item_price = await this.redis_client.hgetall(
+      `empire:prices:${item_name}`,
+    );
+    if (Object.keys(item_price).length > 0) {
+      return item_price as unknown as RedisPrices; //type safety who?
+    }
+    return undefined;
+  }
   public disconnect() {
     this.redis_client.disconnect();
   }

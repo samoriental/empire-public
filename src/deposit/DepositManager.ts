@@ -138,7 +138,7 @@ export class DepositManager {
     }, {});
   }
 
-  private calculateItemPrice(item_price: number, listed_at: number): number {
+  public calculateItemPrice(item_price: number, listed_at: number): number {
     const currentTime = Math.floor(Date.now() / 1000);
     const timeElapsed = currentTime - listed_at;
     const halfLifeInSeconds = OVERPRICE_HALF_LIFE * 60;

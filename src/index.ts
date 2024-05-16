@@ -9,10 +9,11 @@ import { DepositManager } from './deposit/DepositManager';
 const redis_client = new RedisClient();
 const empire_socket = new EmpireSocket();
 const user = new EmpireUser(empire_socket);
-// const pricing = new PricingOracle()
+const pricing = new PricingOracle(5 * 60 * 1000,  ['buff_avg7', 'csgoempire_avg7', 'csgoempire_lastsale',])
 const deposit_client = new DepositManager(empire_socket, redis_client, user);
-const withdraw_client = new WithdrawManager(empire_socket, redis_client, user);
-
+// const withdraw_client = new WithdrawManager(empire_socket, redis_client, user);
+const price = deposit_client.calculateItemPrice(51531, Math.floor(Date.now()/ 1000))
+console.log(price)
 // const withdraw_manager = new WithdrawManager(empire_socket, redis_client, user);
 // const test_map = new Map()
 // test_map.set(4158926904,250)

@@ -23,7 +23,7 @@ export class WithdrawManager {
   async validateAgainstFilters(
     item: SocketNewItem,
   ): Promise<[boolean, number]> {
-    const item_data = await this.redis_client.getPrices(item.market_name);
+    const item_data = await this.redis_client.getPrice(item.market_name);
     const conditionChecks = [
       {
         condition: () =>

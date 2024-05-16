@@ -20,6 +20,12 @@ interface FilterENVVars {
   PROFIT_MARGIN: number;
 }
 
+interface DepositENVVars {
+  OVERPRICE_MAX_PERCENT: number;
+  UNDERPRICE_MIN_PERCENT: number;
+  OVERPRICE_HALF_LIFE: number;
+}
+
 const checkENVVariables = (): ENVars => {
   if (!process.env.EMPIRE_API_KEY) {
     throw new Error('EMPIRE_API_KEY is not defined');
@@ -75,5 +81,34 @@ const checkFilterENVVariables = (): FilterENVVars => {
   console.info(`PROFIT_MARGIN: ${filter_env_vars.PROFIT_MARGIN}`);
   return filter_env_vars;
 };
+
+const checkDepositENVVariables = (): DepositENVVars => {
+  const deposit_env_vars = {
+    OVERPRICE_MAX_PERCENT: !Number.isNaN(
+      Number(process.env.OVERPRICE_MAX_PERCENT),
+    )
+      ? Number(process.env.OVERPRICE_MAX_PERCENT)
+      : 0.05,
+    UNDERPRICE_MIN_PERCENT: !Number.isNaN(
+      Number(process.env.OVERPRICE_MIN_PERCENT),
+    )
+      ? Number(process.env.OVERPRICE_MIN_PERCENT)
+      : 0.02,
+    OVERPRICE_HALF_LIFE: !Number.isNaN(Number(process.env.OVERPRICE_HALF_LIFE))
+      ? Number(process.env.OVERPRICE_HALF_LIFE)
+      : 720,
+  };
+  console.info('Current deposit settings:');
+  console.info(
+    `OVERPRICE_MAX_PERCENT: ${deposit_env_vars.OVERPRICE_MAX_PERCENT}`,
+  );
+  console.info(
+    `UNDERPRICE_MIN_PERCENT: ${deposit_env_vars.UNDERPRICE_MIN_PERCENT}`,
+  );
+  console.info(`OVERPRICE_HALF_LIFE: ${deposit_env_vars.OVERPRICE_HALF_LIFE}`);
+  return deposit_env_vars;
+};
+
 export const env_variables = checkENVVariables();
 export const filter_env_variables = checkFilterENVVariables();
+export const deposit_env_variables = checkDepositENVVariables();

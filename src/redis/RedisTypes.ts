@@ -3,3 +3,10 @@ export interface RedisPrices {
   liquidity: number;
   price: number;
 }
+
+export interface RedisDeposit {
+  item_name: string;
+  id: number;
+  listed_at: number;
+  bot_managed: boolean;
+}

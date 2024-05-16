@@ -29,3 +29,9 @@ export interface SocketAuctionUpdate {
   auction_highest_bidder: number;
   id: number;
 }
+
+export interface APIUserInventory {
+  id: number;
+  invalid?: string;
+  market_name: string;
+}

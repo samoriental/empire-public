@@ -35,3 +35,47 @@ export interface APIUserInventory {
   invalid?: string;
   market_name: string;
 }
+
+interface ItemValidation {
+  validItemDetected: boolean,
+}
+
+interface Partner {
+  id: number;
+  steam_id: string;
+  steam_name: string;
+  avatar: string;
+  avatar_full: string;
+  profile_url: string;
+  timecreated: number;
+  steam_level: number;
+}
+
+interface Metadata {
+  item_validation: ItemValidation;
+  expires_at: number;
+  partner: Partner;
+}
+
+interface Item {
+  market_name: string;
+  market_value: number;
+}
+
+interface TradeStatusData {
+  status: number;
+  status_message: string;
+  metadata: Metadata;
+  created_at: string;
+  updated_at: string;
+  id: number;
+  item_id: number;
+  tradeoffer_id: number;
+  item: Item;
+  total_value: number;
+}
+
+export interface SocketTradeStatus {
+  type: string;
+  data: TradeStatusData;
+}

@@ -92,10 +92,10 @@ export class DepositManager {
     );
 
     const item_ids = validDeposits.map(([key]) => key);
+    console.log(item_ids.length)
     const deposits = await this.empire_user.getTrades();
     const matched_ids = this.mapDepositIDs(deposits, item_ids);
     const deposit_ids = Object.values(matched_ids).map(deposit => deposit.id);
-
     if (deposit_ids.length > 0) {
       await this.empire_user.cancelDeposits(deposit_ids);
     }

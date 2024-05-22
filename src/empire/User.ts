@@ -131,7 +131,7 @@ export class EmpireUser {
               error.response.data.message ===
               "You don't have enough coins to do that!"
             ) {
-              throw new Error('Out of funds. ');
+              console.error('Out of funds.');
             }
             console.error('An error occurred:', error);
             break;
@@ -242,6 +242,7 @@ export class EmpireUser {
         },
       },
     );
+    console.log("canceling deposits")
     console.log(response.data);
   }
 

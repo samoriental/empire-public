@@ -1,6 +1,6 @@
 // @ts-expect-error : NO TYPES
 import io from 'socket.io-client';
-import { SocketAuctionUpdate, SocketInit, SocketNewItem } from './EmpireTypes';
+import { SocketAuctionUpdate, SocketInit, SocketNewItem, SocketTradeStatus } from './EmpireTypes';
 import { EmpireUser } from './User';
 import { setTimeout, clearTimeout } from 'timers';
 import { env_variables } from '../helper/env';
@@ -99,7 +99,7 @@ export class EmpireSocket {
     }
   }
 
-  async init(data: SocketInit) {
+  init(data: SocketInit) {
     if (data && data.authenticated) {
       console.info(`Successfully authenticated as ${data.name}`);
     } else {
@@ -113,13 +113,13 @@ export class EmpireSocket {
     }
   }
 
-  async newItem(data: SocketNewItem[]) {
+  newItem(data: SocketNewItem[]) {
     data.forEach(item => {
       this.emitEvent(NEW_ITEM, item);
     });
   }
 
-  async auctionUpdate(data: SocketAuctionUpdate[]) {
+  auctionUpdate(data: SocketAuctionUpdate[]) {
     data.forEach(auction => {
       this.auctionSubscriptions.forEach((subscriptionInfo, auction_id) => {
         if (auction.id === auction_id) {
@@ -128,4 +128,10 @@ export class EmpireSocket {
       });
     });
   }
+
+  // tradeStatus(data: SocketTradeStatus[]) {
+  //   data.forEach(trade => {
+  //     this.
+  //   })
+  // }
 }

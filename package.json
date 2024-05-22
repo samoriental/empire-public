@@ -26,11 +26,16 @@
     "@eslint/js": "^9.2.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.12.11",
+    "@types/steam-totp": "^2.1.2",
+    "@types/steam-tradeoffer-manager": "^2.11.0",
+    "@types/steam-user": "^5.0.0",
+    "@types/steamcommunity": "^3.43.7",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "eslint": "^9.2.0",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.2.0",
+    "i": "^0.3.7",
     "prettier": "^3.2.5",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
@@ -41,6 +46,10 @@
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "ioredis": "^5.4.1",
-    "socket.io-client": "^2.5.0"
+    "socket.io-client": "^2.5.0",
+    "steam-totp": "^2.1.2",
+    "steam-tradeoffer-manager": "^2.11.4",
+    "steam-user": "^5.0.9",
+    "steamcommunity": "^3.48.3"
   }
 }

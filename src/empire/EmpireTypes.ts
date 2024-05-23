@@ -38,7 +38,7 @@ export interface APIUserInventory {
 }
 
 interface ItemValidation {
-  validItemDetected: boolean,
+  validItemDetected: boolean;
 }
 
 interface Partner {

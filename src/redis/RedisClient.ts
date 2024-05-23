@@ -70,7 +70,10 @@ export class RedisClient {
       deposits.forEach(deposit => {
         if (deposit.id) {
           pipeline.hmset(`empire:deposits:${deposit.id}`, deposit);
-          pipeline.sadd('empire:deposits:index', `empire:deposits:${deposit.id.toString()}`);
+          pipeline.sadd(
+            'empire:deposits:index',
+            `empire:deposits:${deposit.id.toString()}`,
+          );
         } else {
           console.error('Deposit with invalid or no ID:', deposit);
         }

@@ -231,16 +231,21 @@ export class EmpireUser {
   }
 
   async cancelDeposits(item_ids: number[]) {
-    const response = await axios.post(
-      `https://${env_variables.EMPIRE_URL}/api/v2/trading/deposit/cancel`,
-      { ids: item_ids },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${env_variables.EMPIRE_API_KEY}`,
+    const chunkSize = 20;
+    for (let i = 0; i < item_ids.length; i += chunkSize) {
+      const chunkIds = item_ids.slice(i, i + chunkSize);
+      const response = await axios.post(
+        `https://${env_variables.EMPIRE_URL}/api/v2/trading/deposit/cancel`,
+        { ids: chunkIds },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${env_variables.EMPIRE_API_KEY}`,
+          },
         },
-      },
-    );
+      );
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
   }
 
   async getTrades(): Promise<APIUserDeposit[]> {

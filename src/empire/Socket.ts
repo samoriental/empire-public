@@ -1,6 +1,11 @@
 // @ts-expect-error : NO TYPES
 import io from 'socket.io-client';
-import { SocketAuctionUpdate, SocketInit, SocketNewItem, SocketTradeStatus } from './EmpireTypes';
+import {
+  SocketAuctionUpdate,
+  SocketInit,
+  SocketNewItem,
+  SocketTradeStatus,
+} from './EmpireTypes';
 import { EmpireUser } from './User';
 import { setTimeout, clearTimeout } from 'timers';
 import { env_variables } from '../helper/env';

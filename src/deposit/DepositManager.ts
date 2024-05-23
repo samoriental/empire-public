@@ -18,7 +18,7 @@ export class DepositManager {
     empire_ws: EmpireSocket,
     redis_client: RedisClient,
     empire_user: EmpireUser,
-    item_update_interval: number = 60 * 60 * 1000,
+    item_update_interval: number = 10 * 60 * 1000,
   ) {
     this.empire_ws = empire_ws;
     this.redis_client = redis_client;
@@ -92,7 +92,6 @@ export class DepositManager {
     );
 
     const item_ids = validDeposits.map(([key]) => key);
-    console.log(item_ids.length)
     const deposits = await this.empire_user.getTrades();
     const matched_ids = this.mapDepositIDs(deposits, item_ids);
     const deposit_ids = Object.values(matched_ids).map(deposit => deposit.id);

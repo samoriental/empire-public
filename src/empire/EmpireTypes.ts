@@ -34,6 +34,7 @@ export interface APIUserInventory {
   id: number;
   invalid?: string;
   market_name: string;
+  item_id: number;
 }
 
 interface ItemValidation {

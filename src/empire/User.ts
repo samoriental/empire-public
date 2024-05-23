@@ -214,7 +214,6 @@ export class EmpireUser {
       (v, i) => itemsArray.slice(i * chunkSize, i * chunkSize + chunkSize),
     );
     for (const items of itemsChunks) {
-      console.log(items);
       const response = await axios.post(
         `https://${env_variables.EMPIRE_URL}/api/v2/trading/deposit`,
         { items },
@@ -242,8 +241,6 @@ export class EmpireUser {
         },
       },
     );
-    console.log("canceling deposits")
-    console.log(response.data);
   }
 
   async getTrades(): Promise<APIUserDeposit[]> {

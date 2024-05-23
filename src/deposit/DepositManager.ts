@@ -59,7 +59,7 @@ export class DepositManager {
       await this.redis_client.getDeposits(deposited_item_ids);
 
     return deposited_items.map(item => {
-      const deposit = redis_deposit_info.get(item.id);
+      const deposit = redis_deposit_info.get(item.item_id);
       return (
         deposit ?? {
           item_name: item.market_name,

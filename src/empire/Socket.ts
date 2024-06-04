@@ -37,6 +37,10 @@ export class EmpireSocket {
       secure: true,
       rejectUnauthorized: false,
       extraHeaders: { 'User-agent': `API Bot` },
+      query: {
+        uid: this.metadata.user.id,
+        token: this.metadata.socket_token,
+      },
     });
     this.io.on('connect', async () => {
       this.io.emit('filters', {
